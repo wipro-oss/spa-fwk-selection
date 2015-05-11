@@ -1,0 +1,25 @@
+{
+  "name": "spa-fwk-selection",
+  "version": "1.0.0",
+  "authors": [
+    "shyam <shyamsundar.shanmugam@wipro.com>"
+  ],
+  "description": "Simple application to help in selecting a SPA framework",
+  "main": "index.html",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.17",
+    "bootstrap": "~3.3.4"
+  }
+}
