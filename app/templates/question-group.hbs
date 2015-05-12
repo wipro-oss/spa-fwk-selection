@@ -1,16 +1,35 @@
 <fieldset>
   <legend>{{name}}</legend>
-  <ul>
+  <div class="panel-group" id="{{id}}" role="tablist" aria-multiselectable="true">
     {{#each children}}
-    <li>
-      <h3 class="text-capitalize">{{name}}</h3>
-      <dl>
-        <dt>Explanation</dt>
-        <dd>{{explanation}}</dd>
-        <dt>Implication</dt>
-        <dd>{{implication}}</dd>
-      </dl>
-    </li>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="{{id}}">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#{{../id}}" href="#{{id}}-panel" aria-expanded="true" aria-controls="{{id}}-panel">
+            {{name}}
+          </a>
+        </h4>
+      </div>
+      <div id="{{id}}-panel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{id}}">
+        <div class="panel-body">
+          <a tabindex="0" class="btn btn-sm" role="button" data-toggle="popover" data-trigger="focus" title="Description" data-content="{{explanation}}">Description</a>
+          <a tabindex="1" class="btn btn-sm" role="button" data-toggle="popover" data-trigger="focus" title="Implication" data-content="{{implication}}">Implication</a>
+          {{#each questions}}
+          <div id="{{id}}" class="form-group">
+            <label>{{question}}</label>
+            {{#each values}}
+            <div class="radio">
+              <label>
+                <input type="radio" name="{{../id}}" id="{{../id}}-{{value}}" value="{{value}}">
+                {{label}}
+              </label>
+            </div>
+            {{/each}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
     {{/each}}
-  </ul>
+  </div>
 </fieldset>
