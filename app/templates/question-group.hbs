@@ -1,0 +1,16 @@
+<fieldset>
+  <legend>{{name}}</legend>
+  <ul>
+    {{#each children}}
+    <li>
+      <h3>{{name}}</h3>
+      <dl>
+        <dt>Explanation</dt>
+        <dd>{{explanation}}</dd>
+        <dt>Implication</dt>
+        <dd>{{implication}}</dd>
+      </dl>
+    </li>
+    {{/each}}
+  </ul>
+</fieldset>
