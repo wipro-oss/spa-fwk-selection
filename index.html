@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <title>Single Page Applications</title>
 
-    <link href="app/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="app/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="app/vendor/radar-chart-d3/src/radar-chart.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
+
   </head>
 
   <body>
@@ -18,7 +21,11 @@
     <div class="container">
       <div class="row">
 
-        <div id="questions" class="col-sm-6">
+        <div id="left" class="col-sm-6">
+          <div class="panel-group" id="param-groups" role="tablist" aria-multiselectable="true">
+          </div>
+        </div>
+        <div id="right" class="col-sm-6">
         </div>
 
       </div><!-- /.row -->

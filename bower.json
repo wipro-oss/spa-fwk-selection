@@ -22,6 +22,8 @@
     "requirejs": "~2.1.17",
     "bootstrap": "~3.3.4",
     "handlebars": "~3.0.3",
-    "text": "~2.0.14"
+    "text": "~2.0.14",
+    "d3": "~3.5.5",
+    "radar-chart-d3": "*"
   }
 }

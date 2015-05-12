@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="{{id}}">
+    <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#param-groups" href="#{{id}}-body" aria-expanded="true" aria-controls="{{id}}-body">
+        {{name}}
+      </a>
+      <span class="pull-right">{{total}}</span>
+    </h4>
+  </div>
+  <div id="{{id}}-body" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{id}}">
+    <div class="panel-body">
+      {{#each children}}
+      <div id="w-{{id}}" class="form-group">
+        <div>
+          <label class="weight" for="{{id}}">{{parameter}}</label>
+          <span class="pull-right">{{weight}}</span>
+        </div>
+        <input id="{{id}}" class="weight" type="range" min="0" max="10" step=".5" data-value="{{weight}}" value="{{weight}}"/>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
