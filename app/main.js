@@ -92,9 +92,21 @@ require(['d3', 'radar-chart'], function(d3, RadarChart) {
       .style("fill", function(d, i){ return colorscale(i);})
     ;
     //Create text next to squares
-    legend.selectAll('text')
+    legend.selectAll('a')
       .data(LegendOptions)
       .enter()
+      .append('a')
+      .attr("id", function(d, i) { return 'l-' + fwkKeys[i] })
+      .attr("xlink:href", '#')
+      .on('click', function(e) {
+        //debugger;
+        var id = this.id.replace(/l-/, '');
+        var poly = d3.select('#p-' + id);
+        var cls = poly.attr('class').replace(/^.*(radar-chart-serie\d+).*$/, '.$1');
+        var val = poly.style('visibility') === 'visible' ? 'hidden' : 'visible';
+        d3.selectAll(cls).style('visibility', val);
+        d3.select(this).style('text-decoration', val == 'visible' ? 'none' : 'line-through');
+      })
       .append("text")
       .attr("x", w - 52)
       .attr("y", function(d, i){ return i * 20 + 9;})
@@ -118,6 +130,9 @@ require(['d3', 'radar-chart'], function(d3, RadarChart) {
     var svg = d3.select('#right')
         .select('svg').attr('width', w+300);
 
+    d3.selectAll('svg polygon')[0].forEach(function(polygon, i) {
+      polygon.id = 'p-' + fwkKeys[i];
+    });
   }
 });
 require(['jquery', 'bootstrap', 'handlebars', 'text!templates/fwk-params.hbs'], function($, bootstrap, Handlebars, fwkParamsTemplate){

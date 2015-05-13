@@ -1,0 +1,24 @@
+button#angular-js {
+  background-color: #DD1B16;
+  border-color: #002A41;
+}
+button#backbone-js {
+  background-color: #0071B5;
+  border-color: #002A41;
+}
+button#ember-js {
+  background-color: #FC745D;
+  border-color: #EB5036;
+}
+button#meteor-js {
+  background-color: #DE4F4F;
+  border-color: #27272B;
+}
+button#knockout-js {
+  background-color: #DE8800;
+  border-color: #DE6E00;
+}
+button#ext-js {
+  background-color: #8DCA11;
+  border-color: #568B3C;
+}
