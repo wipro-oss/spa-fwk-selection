@@ -7,7 +7,7 @@
       <span class="badge pull-right">{{total}}</span>
     </h4>
   </div>
-  <div id="{{id}}-body" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{id}}">
+  <div id="{{id}}-body" class="panel-collapse" role="tabpanel" aria-labelledby="{{id}}">
     <div class="panel-body">
       {{#each children}}
       <div id="w-{{id}}" class="form-group">
@@ -15,7 +15,7 @@
           <label class="weight" for="{{id}}">{{parameter}}</label>
           <span class="pull-right">{{weight}}</span>
         </div>
-        <input id="{{id}}" class="weight" type="range" min="0" max="10" step=".5" data-value="{{weight}}" value="{{weight}}"/>
+        <input id="{{id}}" data-group="{{../id}}" class="weight" type="range" min="0" max="10" step=".5" data-value="{{weight}}" value="{{weight}}"/>
       </div>
       {{/each}}
     </div>

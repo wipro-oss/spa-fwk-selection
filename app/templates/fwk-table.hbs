@@ -1,0 +1,18 @@
+<table class="table table-striped" style="font-size: .8em">
+  <thead>
+    <tr>
+      {{#each header}}
+      <th>{{.}}</th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rows}}
+    <tr>
+      {{#each this}}
+      <td>{{.}}</td>
+      {{/each}}
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
