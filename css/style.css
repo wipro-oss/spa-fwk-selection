@@ -22,3 +22,5 @@ button#ext-js {
   background-color: #8DCA11;
   border-color: #568B3C;
 }
+.badge { display: none }
+body { overflow-x: hidden }

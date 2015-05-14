@@ -17,6 +17,8 @@ Application Needs,10,Multi-language Support (Groovy / Scala),0,0,0,0,0,0
 Developer Support,10,Quality of Documentation/Tutorials,0.8,0.7,0.6,0.7,0.4,0.8
 Developer Support,0,Books Published,0.7,0.8,0.6,0.5,0.2,0.6
 Server Environment,10,REST Support (client and server),1,1,1,1,0,1
+Client/User Environment,10,RWD Support,0.8,0.8,0.8,0.8,0.5,0.9
+Client/User Environment,5,IE Support,0.2,0.2,0.2,1,0.2,0.8
 Client/User Environment,10,Mobile / iPhone Support,1,1,1,1,1,1
 Application Needs,0,Degree of Risk,1,1,1,0.5,0.3,1
 Application Needs,0,PUSH support,0.5,0.5,0.5,0.5,1,0.5

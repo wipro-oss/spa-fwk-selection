@@ -49,7 +49,10 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
 
   //Legend titles
   var LegendOptions = fwkKeys.map(function(fwk) { return fwkLabels[fwk]; });
-
+  $('#tabPane a').click(function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
   function drawLegend() {
     var svg = d3.select('#radar-chart')
         .selectAll('svg')
@@ -222,21 +225,37 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       }
       function toBubbleModel(scale) {
         var fwkMap = {};
+        var fwkGrp = {};
         fwkKeys.forEach(function(fwk) {
           fwkMap[fwk] = { name: fwkLabels[fwk], children: [] };
+          fwkGrp[fwk] = {};
         });
         model.forEach(function(group) {
           fwkKeys.forEach(function(fwk) {
-            var size = scale * group[fwk];
-            fwkMap[fwk].children.push({ name: group.name, size: size });
+            fwkMap[fwk].children.push({ name: group.name, children: [] });
+            fwkGrp[fwk][group.name] = [];
           });
+          group.children.forEach(function(param) {
+            fwkKeys.forEach(function(fwk) {
+              var size = param.weight * group.parameters[param.id][fwk];
+              fwkGrp[fwk][group.name].push({ name: param.parameter, size: size });
+            });
+          })
+        });
+        var children = fwkKeys.map(function(fwk) {
+          var group = fwkMap[fwk];
+          group.children.forEach(function(child) {
+            child.children = fwkGrp[fwk][child.name];
+          });
+          return group;
         });
         return {
           name: "Frameworks",
-          children: fwkKeys.map(function(fwk) { return fwkMap[fwk]; })
+          children: children
         };
       }
       function drawBubbleChart(root) {
+        console.log(root);
         var margin = 20,
             diameter = 400;
 
