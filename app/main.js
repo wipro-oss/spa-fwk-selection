@@ -19,7 +19,7 @@ require.config({
   }
 });
 
-require(['d3', 'radar-chart'], function(d3, RadarChart) {
+require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate) {
   var s = 400, w = s, h = s;
   var colorscale = d3.scale.category10();
   var fwkKeys = [
@@ -30,34 +30,28 @@ require(['d3', 'radar-chart'], function(d3, RadarChart) {
     'meteor-js',
     'ext-js'
   ];
+  var fwkLabels = {
+    'angular-js'  : 'AngularJs',
+    'backbone-js' : 'BackboneJs',
+    'ember-js'    : 'EmberJs',
+    'knockout-js' : 'KnockoutJs',
+    'meteor-js'   : 'Meteor',
+    'ext-js'      : 'ExtJs'
+  };
+  var gidMap = {};
+  var pidMap = {};
+  var template = Handlebars.compile(fwkParamsTemplate);
+  var tableTemplate = Handlebars.compile(fwkTableTemplate)
+  var nameToId = function(name) {
+    return name.replace(/\W+/g, '-').toLowerCase();
+  };
+  var qId = 0;
+
   //Legend titles
-  var LegendOptions = ['AngularJS','BackboneJS', 'EmberJS', 'KnockoutJS', 'Meteor', 'ExtJS'];
-
-  d3.csv('app/csv/fwk-params.csv')
-    .get(function(err, rows) {
-      if ( err ) throw err;
-
-      var fwks = {
-        'angular-js': [],
-        'backbone-js': [],
-        'ember-js': [],
-        'knockout-js': [],
-        'meteor-js': [],
-        'ext-js': []
-      };
-      rows.forEach(function(row) {
-        fwkKeys.forEach(function(fwk) {
-          fwks[fwk].push({axis: row.parameter, value: row[fwk] });
-        })
-      });
-      var radarData = fwkKeys.map(function(fwk) {
-        return fwks[fwk];
-      });
-      drawChart(radarData);
-    });
+  var LegendOptions = fwkKeys.map(function(fwk) { return fwkLabels[fwk]; });
 
   function drawLegend() {
-    var svg = d3.select('#right')
+    var svg = d3.select('#radar-chart')
         .selectAll('svg')
         .append('svg')
         .attr("width", w+300)
@@ -114,7 +108,7 @@ require(['d3', 'radar-chart'], function(d3, RadarChart) {
       .attr("fill", "#737373")
       .text(function(d) { return d; });
   }
-  function drawChart(data) {
+  function drawRadarChart(data) {
     //Options for the Radar chart, other than default
     var radarCfg = {
       w: w,
@@ -125,54 +119,40 @@ require(['d3', 'radar-chart'], function(d3, RadarChart) {
     }
     //Call function to draw the Radar chart
     //Will expect that data is in %'s
-    RadarChart.draw("#right", data, radarCfg);
+    RadarChart.draw("#radar-chart", data, radarCfg);
     drawLegend();
-    var svg = d3.select('#right')
+    var svg = d3.select('#radar-chart')
         .select('svg').attr('width', w+300);
 
     d3.selectAll('svg polygon')[0].forEach(function(polygon, i) {
       polygon.id = 'p-' + fwkKeys[i];
     });
   }
-});
-require(['jquery', 'bootstrap', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs'], function($, bootstrap, Handlebars, fwkParamsTemplate, fwkTableTemplate){
-  $('header h1').html('Single Page Applications');
-  var fwkKeys = [
-    'angular-js',
-    'backbone-js',
-    'ember-js',
-    'knockout-js',
-    'meteor-js',
-    'ext-js'
-  ];
-  var fwkLabels = {
-    'angular-js'  : 'AngularJs',  
-    'backbone-js' : 'BackboneJs',
-    'ember-js'    : 'EmberJs',    
-    'knockout-js' : 'KnockoutJs',
-    'meteor-js'   : 'Meteor',     
-    'ext-js'      : 'ExtJs'
-  };
-  var gidMap = {};
-  var pidMap = {};
-  var template = Handlebars.compile(fwkParamsTemplate);
-  var tableTemplate = Handlebars.compile(fwkTableTemplate)
-  var nameToId = function(name) {
-    return name.replace(/\W+/g, '-').toLowerCase();
-  };
-  var qId = 0;
   d3.csv('app/csv/fwk-params.csv')
     .get(function(err, rows) {
       if ( err ) throw err;
       var model = processRows(rows);
-      updateModel();
-      console.log(model);
-      console.log(tableModel());
-      $('#table').html(tableTemplate(tableModel()));
-      var paramGroup = $('#param-groups');
-      model.forEach(function(row) {
-        paramGroup.append(template(row));
-      });
+      handleChange();
+      function handleChange() {
+        if ( this.dataset == undefined  ) {
+          updateModel()
+        } else {
+          var id = this.id, val = this.value;
+          updateModel(this.dataset['group'], id, val);
+        }
+        console.log(model);
+        $('#table').html(tableTemplate(tableModel()));
+        $('#table').html(tableTemplate(tableModel()));
+        var paramGroup = $('#param-groups');
+        $('#param-groups').empty();
+        model.forEach(function(row) {
+          paramGroup.append(template(row));
+        });
+        showRadarChart();
+        $('#bubble-chart').empty();
+        drawBubbleChart(toBubbleModel(100));
+        $('.weight').on('change', handleChange);
+      }
       function updateModel(gid, id, val) {
         model.forEach(function(group) {
           if ( gid === group.id ) {
@@ -197,43 +177,139 @@ require(['jquery', 'bootstrap', 'handlebars', 'text!templates/fwk-params.hbs', '
               group[fwk] += (param.weight * pvMap[fwk]);
             })
           });
+          // convert to percentage
+          fwkKeys.forEach(function(fwk) {
+            group[fwk] = (group[fwk] / (n * 10)).toFixed(2);
+          })
           group.total = (s/n).toFixed(2);
         });
       }
       function tableModel() {
         var header = ['Parameter'].concat(fwkKeys.map(function(fwk) { return fwkLabels[fwk]; }));
         var rows = model.map(function(group) {
-          return [group.name].concat(fwkKeys.map(function(fwk) { return group[fwk]; }));
+          var values = fwkKeys.map(function(fwk) { return group[fwk]; });
+          var max = Math.max.apply(null, values);
+          console.log(max);
+          return [group.name].concat(values.map(function(v) { return v == max ? '<strong>' + v + '</strong>' : v }));
         });
         return {
           header: header,
           rows: rows
         };
       }
-      $('.weight').on('change', function(){
-        var id = this.id, val = this.value;
-        /*
-        $('#w-' + id + ' span.pull-right').html(val);
-        var panel = $(this).closest('.panel');
-        var n = 0, s = 0;
-        panel.find('input').each(function(i, v) {
-          if ( v.value !== '0' ) {
-            n++;
-            s += parseFloat(v.value);
-          }
+      function showRadarChart() {
+        // data
+        var fwks = {
+          'angular-js': [],
+          'backbone-js': [],
+          'ember-js': [],
+          'knockout-js': [],
+          'meteor-js': [],
+          'ext-js': []
+        };
+        model.forEach(function(group) {
+          fwkKeys.forEach(function(fwk) {
+            fwks[fwk].push({axis: group.name, value: group[fwk] });
+          })
         });
-        panel.find('.badge').html((s/n).toFixed(2));
-        */
-        updateModel(this.dataset['group'], id, val);
-        console.log(model);
-        $('#table').html(tableTemplate(tableModel()));
-        $('#table').html(tableTemplate(tableModel()));
-        var paramGroup = $('#param-groups');
-        $('#param-groups').empty();
-        model.forEach(function(row) {
-          paramGroup.append(template(row));
+        var radarData = fwkKeys.map(function(fwk) {
+          return fwks[fwk];
         });
-      });
+        drawRadarChart(radarData);
+      }
+      function toBubbleModel(scale) {
+        var fwkMap = {};
+        fwkKeys.forEach(function(fwk) {
+          fwkMap[fwk] = { name: fwkLabels[fwk], children: [] };
+        });
+        model.forEach(function(group) {
+          fwkKeys.forEach(function(fwk) {
+            var size = scale * group[fwk];
+            fwkMap[fwk].children.push({ name: group.name, size: size });
+          });
+        });
+        return {
+          name: "Frameworks",
+          children: fwkKeys.map(function(fwk) { return fwkMap[fwk]; })
+        };
+      }
+      function drawBubbleChart(root) {
+        var margin = 20,
+            diameter = 400;
+
+        var color = d3.scale.linear()
+            .domain([-1, 5])
+            .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+            .interpolate(d3.interpolateHcl);
+
+        var leafColor = d3.scale.category10();
+
+        var pack = d3.layout.pack()
+            .padding(2)
+            .size([diameter - margin, diameter - margin])
+            .value(function(d) { return d.size; })
+
+        var svg = d3.select("#bubble-chart").append("svg")
+            .attr("width", diameter)
+            .attr("height", diameter)
+            .append("g")
+            .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+        var focus = root,
+            nodes = pack.nodes(root),
+            view;
+        var leaf = {
+          "Application Needs": 0,
+          "Client/User Environment": 1,
+          "Developer Support": 2,
+          "Server Environment": 3,
+          "User Interface": 4
+        }
+        var circle = svg.selectAll("circle")
+            .data(nodes)
+            .enter().append("circle")
+            .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+            .style("fill", function(d) { return d.children ? color(d.depth) : leafColor(leaf[d.name]); })
+            .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+
+        var text = svg.selectAll("text")
+            .data(nodes)
+            .enter().append("text")
+            .attr("class", "label")
+            .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
+            .style("display", function(d) { return d.parent === root ? null : "none"; })
+            .text(function(d) { return d.size ? d.name + ' (' + d.size + ')' : d.name ; });
+
+        var node = svg.selectAll("circle,text");
+
+        d3.select("#bubble-chart")
+          .on("click", function() { zoom(root); });
+
+        zoomTo([root.x, root.y, root.r * 2 + margin]);
+
+        function zoom(d) {
+          var focus0 = focus; focus = d;
+
+          var transition = d3.transition()
+              .duration(d3.event.altKey ? 7500 : 750)
+              .tween("zoom", function(d) {
+                var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                return function(t) { zoomTo(i(t)); };
+              });
+
+          transition.selectAll("text")
+            .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+            .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+            .each("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+              .each("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+        }
+
+        function zoomTo(v) {
+          var k = diameter / v[2]; view = v;
+          node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+          circle.attr("r", function(d) { return d.r * k; });
+        }
+      }
     });
   function processRows(rows) {
     var m = {}, t = {}, wm = wm = {};
