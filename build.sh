@@ -12,35 +12,14 @@ rm -fr .git .gitignore \
    build.js build.sh build.txt
 
 cd app/vendor
-cp jquery/dist/jquery.js .
-rm -fr jquery/*
-mkdir jquery/dist
-mv jquery.js jquery/dist
+mkdir -p ../keep/radar-chart-d3/src/
+mv radar-chart-d3/src/radar-chart.css ../keep/radar-chart-d3/src/
+mkdir -p ../keep/bootstrap/dist/
+mv bootstrap/dist/css bootstrap/dist/fonts ../keep/bootstrap/dist/
+mkdir -p ../keep/requirejs
+mv requirejs/require.js ../keep/requirejs
+rm -fr *
+mv ../keep/* .
+rm -fr ../keep
 
-
-cp -r bootstrap/dist .
-rm -fr bootstrap/*
-mv dist bootstrap/
-rm -fr bootstrap/dist/js/bootstrap.min.js bootstrap/dist/js/npm.js \
-   bootstrap/dist/css/*.map
-
-cp handlebars/handlebars.js .
-rm -fr handlebars/*
-mv handlebars.js handlebars/
-
-cp text/text.js .
-rm -fr text/*
-mv text.js text/
-
-
-cp d3/d3.js .
-rm -fr d3/*
-mv d3.js d3/
-
-cp radar-chart-d3/src/radar-chart.js radar-chart-d3/src/radar-chart.css .
-rm -fr radar-chart-d3/*
-mkdir radar-chart-d3/src/
-mv radar-chart.* radar-chart-d3/src/
-
-rm -fr requirejs/*.json requirejs/*.md
 echo done
