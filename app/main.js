@@ -137,6 +137,9 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       var model = processRows(rows);
       handleChange();
       function handleChange() {
+        $('#param-groups .panel-collapse').each(function(i, panel) {
+          model[i].expanded = panel.classList.contains('in');
+        });
         if ( this.dataset == undefined  ) {
           updateModel()
         } else {
@@ -566,6 +569,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       return {
         id: gid,
         name: g,
+        expanded: true,
         total: (t[g].s / t[g].n).toFixed(2),
         parameters: wm[gid],
         children: m[g]

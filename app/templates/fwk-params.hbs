@@ -1,13 +1,13 @@
 <div class="panel panel-default">
   <div class="panel-heading" role="tab" id="{{id}}">
     <h4 class="panel-title">
-      <a data-toggle="collapse" data-parent="#param-groups" href="#{{id}}-body" aria-expanded="true" aria-controls="{{id}}-body">
+      <a data-toggle="collapse" data-parent="#param-groups" href="#{{id}}-body" aria-controls="{{id}}-body">
         {{name}}
       </a>
       <span class="badge pull-right">{{total}}</span>
     </h4>
   </div>
-  <div id="{{id}}-body" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="{{id}}">
+  <div id="{{id}}-body" class="panel-collapse collapse {{#if expanded}}in{{/if}}" aria-expanded="{{expanded}}" role="tabpanel" aria-labelledby="{{id}}">
     <div class="panel-body">
       {{#each children}}
       <div id="w-{{id}}" class="form-group">
