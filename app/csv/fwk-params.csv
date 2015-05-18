@@ -6,7 +6,7 @@ Developer Support,5,Project Health,1,1,1,1,1,1
 Developer Support,5,Developer Availability,0.5,0.6,0.4,0.4,0.2,0.5
 Developer Support,0,Job Trends,1,1,0.5,0.5,0.2,1
 User Interface,0,Templating,1,0.5,1,0.8,0.8,1
-User Interface,0,Components,1,,,,,
+User Interface,0,Components,1,0.8,1,0,0,0.5
 User Interface,5,Ajax,1,1,1,1,1,1
 User Interface,5,Plugins or Add-Ons,0.8,0.5,0.5,0.3,0.2,0.7
 Application Needs,10,Scalability,,,,,,
@@ -18,9 +18,9 @@ Developer Support,10,Quality of Documentation/Tutorials,0.8,0.7,0.6,0.7,0.4,0.8
 Developer Support,0,Books Published,0.7,0.8,0.6,0.5,0.2,0.6
 Server Environment,10,REST Support (client and server),1,1,1,1,0,1
 Client/User Environment,10,RWD Support,0.8,0.8,0.8,0.8,0.5,0.9
-Client/User Environment,5,IE Support,0.2,0.2,0.2,1,0.2,0.8
+Client/User Environment,5,IE Support,0.3,0.3,0.3,0.8,0.2,0.5
 Client/User Environment,10,Mobile / iPhone Support,1,1,1,1,1,1
-Application Needs,0,Degree of Risk,1,1,1,0.5,0.3,1
+Application Needs,0,Degree of Risk,1,1,1,0.9,0.3,0.8
 Application Needs,0,PUSH support,0.5,0.5,0.5,0.5,1,0.5
 User Interface,10,Handle large number of data elements ,0.3,0.5,0.3,0.3,0.3,0.3
 User Interface,5,Routing,0.5,0.5,0.8,0.5,0,0.5

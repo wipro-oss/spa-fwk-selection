@@ -22,5 +22,9 @@ button#ext-js {
   background-color: #8DCA11;
   border-color: #568B3C;
 }
-.badge { display: none }
 body { overflow-x: hidden }
+.group-weight {
+  display: inline-block;
+  width: 200px;
+  margin: 0px 10px;
+}

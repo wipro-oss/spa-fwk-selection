@@ -4,7 +4,8 @@
       <a data-toggle="collapse" data-parent="#param-groups" href="#{{id}}-body" aria-controls="{{id}}-body">
         {{name}}
       </a>
-      <span class="badge pull-right">{{total}}</span>
+      <span class="badge pull-right" style="min-width: 3em;">{{weight}}</span>
+      <input id="{{id}}" class="group-weight pull-right" type="range" min="0" max="10" step=".5" data-value="{{weight}}" value="{{weight}}" style="display: inline-block; width: 200px;"/>
     </h4>
   </div>
   <div id="{{id}}-body" class="panel-collapse collapse {{#if expanded}}in{{/if}}" aria-expanded="{{expanded}}" role="tabpanel" aria-labelledby="{{id}}">

@@ -31,12 +31,12 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
     'ext-js'
   ];
   var fwkLabels = {
-    'angular-js'  : 'AngularJs',
-    'backbone-js' : 'BackboneJs',
-    'ember-js'    : 'EmberJs',
-    'knockout-js' : 'KnockoutJs',
+    'angular-js'  : 'AngularJS',
+    'backbone-js' : 'BackboneJS',
+    'ember-js'    : 'EmberJS',
+    'knockout-js' : 'KnockoutJS',
     'meteor-js'   : 'Meteor',
-    'ext-js'      : 'ExtJs'
+    'ext-js'      : 'Ext JS'
   };
   var gidMap = {};
   var pidMap = {};
@@ -141,14 +141,17 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           model[i].expanded = panel.classList.contains('in');
         });
         if ( this.dataset == undefined  ) {
-          updateModel()
+          updateModel();
         } else {
           var id = this.id, val = this.value;
-          updateModel(this.dataset['group'], id, val);
+          if ( this.dataset['group'] == undefined ) {
+            updateGroup(id, val);
+          } else {
+            updateModel(this.dataset['group'], id, val);            
+          }
         }
         console.log(model);
-        $('#table').html(tableTemplate(tableModel()));
-        $('#table').html(tableTemplate(tableModel()));
+        $('#table').html(tableTemplate(tableModel(100)));
         var paramGroup = $('#param-groups');
         $('#param-groups').empty();
         model.forEach(function(row) {
@@ -161,7 +164,15 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         //drawLinearBubbleChart(toBubbleModel(100));
         $('#grouped-bar-chart').empty();
         drawGroupedBarChart();
-        $('.weight').on('change', handleChange);
+        $('.weight, .group-weight').on('change', handleChange);
+      }
+      function updateGroup(id, val) {
+        model.forEach(function(group) {
+          if ( group.id === id ) {
+            group.weight = val;
+          }
+        });
+        updateModel();
       }
       function updateModel(gid, id, val) {
         model.forEach(function(group) {
@@ -172,14 +183,13 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
               }
             });
           }
-          var n = 0, s = 0;
+          var n = 0;
           fwkKeys.forEach(function(fwk) {
             group[fwk] = 0;
           });
           group.children.forEach(function(param) {
             if ( param.weight != 0 ) {
               n++;
-              s += param.weight;
             }
             var pvMap = group.parameters[param.id];
             fwkKeys.forEach(function(fwk) {
@@ -189,21 +199,25 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           });
           // convert to percentage
           fwkKeys.forEach(function(fwk) {
-            group[fwk] = (group[fwk] / (n * 10)).toFixed(2);
+            group[fwk] = (group.weight * (group[fwk] / (n * 10))).toFixed(2);
           })
-          group.total = (s/n).toFixed(2);
         });
       }
-      function tableModel() {
+      function tableModel(scale) {
         var header = ['Parameter'].concat(fwkKeys.map(function(fwk) { return fwkLabels[fwk]; }));
+        var fwkTotals = {};
+        fwkKeys.forEach(function(fwk) {
+          fwkTotals[fwk] = 0;
+        })
         var rows = model.map(function(group) {
-          var values = fwkKeys.map(function(fwk) { return group[fwk]; });
+          var values = fwkKeys.map(function(fwk) { var val = Math.ceil(group[fwk] * scale); fwkTotals[fwk] += val; return val; });
           var max = Math.max.apply(null, values);
           return [group.name].concat(values.map(function(v) { return v == max ? '<strong>' + v + '</strong>' : v }));
         });
         return {
           header: header,
-          rows: rows
+          rows: rows,
+          footer: ['Total'].concat(fwkKeys.map(function(fwk) { return fwkTotals[fwk]; }))
         };
       }
       function showRadarChart() {
@@ -241,7 +255,9 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           group.children.forEach(function(param) {
             fwkKeys.forEach(function(fwk) {
               var size = param.weight * group.parameters[param.id][fwk];
-              fwkGrp[fwk][group.name].push({ name: param.parameter, size: size });
+              if ( size > 0 ) {
+                fwkGrp[fwk][group.name].push({ name: param.parameter, size: size });
+              }
             });
           })
         });
@@ -538,21 +554,15 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       }
     });
   function processRows(rows) {
-    var m = {}, t = {}, wm = wm = {};
+    var m = {}, wm = wm = {};
     var ro = [];
     rows.forEach(function(row) {
       ro.push(row.group);
       var a = m[row.group] || [];
-      var ti = t[row.group] || { n: 0, s: 0};
       row.id = nameToId(row.parameter);
       pidMap[row.id] = row.parameter;
       a.push({ id: row.id, parameter: row.parameter, group: row.group, weight: parseFloat(row.weight) });
       m[row.group] = a;
-      if ( row.weight != '0' ) {
-        ti.n++;
-        ti.s += parseFloat(row.weight);
-      }
-      t[row.group] = ti;
       var gid = nameToId(row.group);
       gidMap[gid] = row.group;
       var wi = wm[gid] || {};
@@ -570,7 +580,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         id: gid,
         name: g,
         expanded: true,
-        total: (t[g].s / t[g].n).toFixed(2),
+        weight: 10,
         parameters: wm[gid],
         children: m[g]
       };
