@@ -24,10 +24,10 @@ User Interface,10,Handle large number of data elements ,0.3,0.5,0.3,0.3,0.3,0.2
 User Interface,5,Routing,0.5,0.5,0.8,0.5,0,0.5
 Server Environment,5,Reuse existing code for adoption,0.2,0.5,0.2,0.6,0.1,0.2
 Application Needs,0,Realtime,0.5,0.2,0.2,0.2,1,0.5
-Developer Support,0,"Alternate languages (typescript, coffeescript, atscript)",0.5,0.5,0.1,0.1,0.1,0.1
+Developer Support,0,Alternate languages,0.5,0.5,0.1,0.1,0.1,0.1
 Developer Support,5,Framework complexity,0.2,1,0.5,0.9,0.1,
 Developer Support,5,Convention over configuration,0.1,0,1,0.2,0.8,
-Developer Support,10,"Tool support (build, browser plugins, live-reload)",0.5,,0.8,0.5,0.5,0.8
+Developer Support,10,Tool support,0.5,,0.8,0.5,0.5,0.8
 Application Needs,10,Offline Support,0.5,0.5,0.5,0.2,0.5,0.5
 Server Environment,0,Isomorphic,0,0,0,0,1,0
 Server Environment,5,SEO Support,0.2,0.2,0.2,0.2,1,0.5

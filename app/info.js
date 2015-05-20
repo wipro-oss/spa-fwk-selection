@@ -1,6 +1,7 @@
 define({
   'developer-productivity': 'How productive the developer can be using the framework',
   'developer-perception': 'How happy are developers using the framework',
+  'degree-of-risk': 'If the framework is new, there\'s inherently some risk in choosing it for your applications. Frameworks that are newer or have few developers score low',
   'learning-curve': 'How easy or difficult is it for new developers to learn the framework and become productive',
   'project-health': 'How healthy is the project, number of releases, frequency of releases, mailing list traffic, questions on stackoverflow etc.',
   'developer-availability': 'How many developers are available with the framework skillset',
@@ -11,14 +12,21 @@ define({
   'seo-support': 'Applications open to the internet will require the application to be crawlable by search spiders so that the application will figure prominently in search results',
   'testing': 'How much support for testing the framework has built-in',
   'i18n-and-l10n': 'Support for internationalization and localization',
-  'validation': 'Framework’s support for user-input/model validation',
+  'validation': 'Framework\'s support for user-input/model validation',
   'ie-support': 'Intranet applications are used by a smaller group of users typically within a company (sometimes including vendors) distributed in geographical clusters. Intranet applications mostly will only be accessible from within an office network. Internet applications cater to a much wider audience which may be distributed.',
   'handle-large-number-of-data-elements': 'Number of UI elements present on the screen at any point in time. Certain screens may contain more than some others. For eg. Reporting screens might contain more elements displayed than data capture screens.',
   'routing': 'Framework support for routing between multiple views (controller/router/dispatcher support)',
   'isomorphic': 'Isomorphism is the ability to run the same code on the client and the server. Since the introduction of NodeJS in 2009 isomorphic javascript applications have become a reality.',
-  'tool-support-build-browser-plugins-live-reload': 'The ecosystem for front-end web development has exploded there are multiple languages, different versions of standards and different browser implementations. The need for tools to handle dependencies, package management and distribution has fueled the creation of a plethora of tools',
+  'tool-support': 'The ecosystem for front-end web development has exploded there are multiple languages, different versions of standards and different browser implementations. The availability of tools to handle dependencies, build, browser plugins, live-reload, package management and distribution',
   'offline-support': 'In case of applications that have to operate in intermittent connectivity environments the data and user experience has to be consistent both while online and offline.',
   'convention-over-configuration': 'Developing and maintaining a large monolithic codebase is cumbersome. So, the ability to break up functionality into modules allows the application to have a coherent structure and streamlines development and maintenance. Frameworks which are more opinionated about the organization of code rate higher because it is easier for new developers to navigate the codebase',
   'framework-complexity': 'The more complex the framework code the more difficult the learning curve. Debugging the errors thrown from the framework can also be easier if the framework complexity is lower.',
-  'quality-of-documentation-tutorials': 'How good the documentation is. Tutorial-style documentation is preferred, reference-style is essential'
+  'quality-of-documentation-tutorials': 'How good the documentation is. Tutorial-style documentation is preferred, reference-style is essential',
+  'reuse-existing-code-for-adoption': 'When resuing existing components there might be some additional effort required to refactor/generate the target code. In case of some frameworks like GWT which is in itself a code-generation based framework very little of the application code can be reused.',
+  'rest-support': 'In case of existing applications there might already exist web service endpoints which can be utilized by the modernization. In new development most frameworks tend to work well with JSON based REST services.',
+  'push-support': 'Client server systems typically operate on the pull model where the client pulls the data from the server when required. But, in some cases information needs to be pushed from the server to the client for eg. Notifications to the user',
+  'plugins-or-add-ons': 'Community developed plugins availability and ecosystem',
+  'alternate-languages': 'Support for writing code in alternate languages that compile to javascript eg. typescript, coffeescript, atscript etc.',
+  'rwd-support': 'Support for responsive web-design frameworks either natively or through plugins/add-ons',
+  'mobile-iphone-support': 'Ability to work well in network constrained environments where connectivity and network bandwidth might be low'
 })

@@ -44,7 +44,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
   var template = Handlebars.compile(fwkParamsTemplate);
   var tableTemplate = Handlebars.compile(fwkTableTemplate)
   var nameToId = function(name) {
-    return name.replace(/\W+/g, '-').toLowerCase();
+    return name.replace(/\W+/g, '-').toLowerCase().replace(/-$/, '');
   };
   var qId = 0;
 
