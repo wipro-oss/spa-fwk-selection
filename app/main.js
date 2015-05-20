@@ -20,7 +20,7 @@ require.config({
 });
 
 require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs', 'text!templates/footer.hbs', './info'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate, footerTemplate, paramInfo) {
-  var s = 400, w = s, h = s;
+  var s = 450, w = s, h = s;
   var scale = 100;
   var colorscale = d3.scale.category10();
   var fwkKeys = [
@@ -99,7 +99,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       .enter()
       .append('a')
       .attr("id", function(d, i) { return 'l-' + fwkKeys[i] })
-      .attr("xlink:href", '#')
+      .attr("xlink:href", function(d, i) { return '#rlink-' + fwkKeys[i] })
       .on('click', function(e) {
         //debugger;
         var id = this.id.replace(/l-/, '');
@@ -109,6 +109,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         d3.selectAll(cls).style('visibility', val);
         d3.select(this).style('text-decoration', val == 'visible' ? 'none' : 'line-through');
         d3.select('#lr-' + id).style('fill-opacity', val == 'visible' ? 1 : 0);
+        e.preventDefault();
       })
       .append("text")
       .attr("x", w - 52)
@@ -291,7 +292,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       function drawBubbleChart(root) {
         console.log(root);
         var margin = 20,
-            diameter = 400;
+            diameter = 500;
 
         var color = d3.scale.linear()
             .domain([-1, 5])
@@ -485,7 +486,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       }
       function drawGroupedBarChart(root) {
         var margin = {top: 20, right: 20, bottom: 30, left: 40},
-            width = 500 - margin.left - margin.right,
+            width = 550 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 
         var x0 = d3.scale.ordinal()
