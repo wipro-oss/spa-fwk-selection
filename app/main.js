@@ -134,6 +134,13 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
     d3.selectAll('svg polygon')[0].forEach(function(polygon, i) {
       polygon.id = 'p-' + fwkKeys[i];
     });
+    var p = d3.select('#radar-chart').append('p');
+    p.append('span')
+      .attr('class', 'label label-default')
+      .html('Note');
+    p.append('small')
+      .attr('class', 'text-muted')
+      .html('&nbsp;Click on the legend item to toggle visibility');
   }
   d3.csv('app/csv/fwk-params.csv')
     .get(function(err, rows) {
@@ -354,6 +361,14 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
           circle.attr("r", function(d) { return d.r * k; });
         }
+        var p = d3.select('#bubble-chart').append('p');
+        p.append('span')
+          .attr('class', 'label label-default')
+          .html('Note');
+        p.append('small')
+          .attr('class', 'text-muted')
+          .html('&nbsp;Click to zoom');
+
       }
       function drawLinearBubbleChart(root) {
         // from http://neuralengr.com/asifr/journals/journals_optogenetic.html
