@@ -19,7 +19,7 @@ require.config({
   }
 });
 
-require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs', './info'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate, paramInfo) {
+require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs', 'text!templates/footer.hbs', './info'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate, footerTemplate, paramInfo) {
   var s = 400, w = s, h = s;
   var scale = 100;
   var colorscale = d3.scale.category10();
@@ -42,7 +42,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
   var gidMap = {};
   var pidMap = {};
   var template = Handlebars.compile(fwkParamsTemplate);
-  var tableTemplate = Handlebars.compile(fwkTableTemplate)
+  var tableTemplate = Handlebars.compile(fwkTableTemplate);
   var nameToId = function(name) {
     return name.replace(/\W+/g, '-').toLowerCase().replace(/-$/, '');
   };
@@ -53,7 +53,9 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
   $('#tabPane a').click(function (e) {
     e.preventDefault()
     $(this).tab('show')
-  })
+  });
+  var footer = Handlebars.compile(footerTemplate);
+  $('footer').append(footer({ year: new Date().getFullYear() }));
   function drawLegend() {
     var svg = d3.select('#radar-chart')
         .selectAll('svg')
