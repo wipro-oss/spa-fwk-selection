@@ -9,11 +9,11 @@ User Interface,0,Templating,1,0.8,1,0.8,0.8,1
 User Interface,0,Components,1,0.8,1,0,0,0.5
 User Interface,5,Ajax,1,1,1,1,1,1
 User Interface,5,Plugins or Add-Ons,0.8,0.5,0.5,0.3,0.2,0.7
-Application Needs,10,Testing,1,0.5,1,0.5,0.2,1
+Application Needs,10,Testing,1,0.5,1,0.5,0.2,0.5
 Application Needs,0,i18n and l10n,0.5,0,0.2,0,0,0.5
-Application Needs,5,Validation ,1,0.5,1,0.5,0.5,1
+Application Needs,5,Validation ,1,0.5,1,0.5,0.5,0.5
 Developer Support,10,Quality of Documentation/Tutorials,0.8,0.7,0.6,0.7,0.4,0.8
-Developer Support,0,Books Published,0.7,0.8,0.6,0.5,0.2,0.6
+Developer Support,0,Books Published,0.7,0.8,0.6,0.5,0.2,0.5
 Server Environment,10,REST Support,1,1,1,0.5,0,0.7
 Client/User Environment,10,RWD Support,0.8,0.8,0.8,0.8,0.5,0.7
 Client/User Environment,5,IE Support,0.3,0.3,0.3,0.8,0.2,0.5
