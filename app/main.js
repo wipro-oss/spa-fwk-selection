@@ -21,6 +21,7 @@ require.config({
 
 require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate) {
   var s = 400, w = s, h = s;
+  var scale = 100;
   var colorscale = d3.scale.category10();
   var fwkKeys = [
     'angular-js',
@@ -82,10 +83,12 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       .data(LegendOptions)
       .enter()
       .append("rect")
+      .attr('id', function(d, i){ return 'lr-' + fwkKeys[i];})
       .attr("x", w - 65)
       .attr("y", function(d, i){ return i * 20;})
       .attr("width", 10)
       .attr("height", 10)
+      .style("stroke", '#ccc')
       .style("fill", function(d, i){ return colorscale(i);})
     ;
     //Create text next to squares
@@ -103,6 +106,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         var val = poly.style('visibility') === 'visible' ? 'hidden' : 'visible';
         d3.selectAll(cls).style('visibility', val);
         d3.select(this).style('text-decoration', val == 'visible' ? 'none' : 'line-through');
+        d3.select('#lr-' + id).style('fill-opacity', val == 'visible' ? 1 : 0);
       })
       .append("text")
       .attr("x", w - 52)
@@ -151,17 +155,17 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           }
         }
         console.log(model);
-        $('#table').html(tableTemplate(tableModel(100)));
+        $('#table').html(tableTemplate(tableModel(scale)));
         var paramGroup = $('#param-groups');
         $('#param-groups').empty();
         model.forEach(function(row) {
           paramGroup.append(template(row));
         });
-        showRadarChart();
+        showRadarChart(scale);
         $('#bubble-chart').empty();
-        drawBubbleChart(toBubbleModel(100));
+        drawBubbleChart(toBubbleModel(scale));
         //$('#linear-bubble-chart').empty();
-        //drawLinearBubbleChart(toBubbleModel(100));
+        //drawLinearBubbleChart(toBubbleModel(scale));
         $('#grouped-bar-chart').empty();
         drawGroupedBarChart();
         $('.weight, .group-weight').on('change', handleChange);
@@ -220,7 +224,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           footer: ['Total'].concat(fwkKeys.map(function(fwk) { return fwkTotals[fwk]; }))
         };
       }
-      function showRadarChart() {
+      function showRadarChart(scale) {
         // data
         var fwks = {
           'angular-js': [],
@@ -232,7 +236,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         };
         model.forEach(function(group) {
           fwkKeys.forEach(function(fwk) {
-            fwks[fwk].push({axis: group.name, value: group[fwk] });
+            fwks[fwk].push({axis: group.name, value: scale * group[fwk] });
           })
         });
         var radarData = fwkKeys.map(function(fwk) {
@@ -492,7 +496,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        data = toGroupedBarModel(100);
+        data = toGroupedBarModel(scale);
         var ageNames = d3.keys(data[0]).filter(function(key) { return key !== "Framework"; });
 
         data.forEach(function(d) {
