@@ -11,6 +11,8 @@ rm -fr .git .gitignore \
    bower.json .bowerrc \
    build.js build.sh build.txt
 
+rm -fr app/templates
+
 cd app/vendor
 mkdir -p ../keep/radar-chart-d3/src/
 mv radar-chart-d3/src/radar-chart.css ../keep/radar-chart-d3/src/
