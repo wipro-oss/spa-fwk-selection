@@ -16,7 +16,7 @@
       {{#each children}}
       <div id="w-{{id}}" class="form-group">
         <div>
-          <label class="weight" for="{{id}}">{{parameter}}{{#if info}} <a class="text-info" href="#{{id}}" data-content="{{info}}" data-toggle="popover" data-trigger="focus"><span class="glyphicon glyphicon-info-sign"></span></a>{{/if}}</label>
+          <label class="weight" for="{{id}}">{{parameter}}{{#if info}} <a class="text-info" href="#info-{{id}}" data-content="{{info}}" data-toggle="popover" data-trigger="focus"><span class="glyphicon glyphicon-info-sign"></span></a>{{/if}}</label>
           <span class="pull-right">{{weight}}</span>
         </div>
         <input id="{{id}}" data-group="{{../id}}" class="weight" type="range" min="0" max="10" step=".5" data-value="{{weight}}" value="{{weight}}"/>
