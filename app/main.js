@@ -19,7 +19,7 @@ require.config({
   }
 });
 
-require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate) {
+require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templates/fwk-params.hbs', 'text!templates/fwk-table.hbs', './info'], function($, bootstrap, d3, RadarChart, Handlebars, fwkParamsTemplate, fwkTableTemplate, paramInfo) {
   var s = 400, w = s, h = s;
   var scale = 100;
   var colorscale = d3.scale.category10();
@@ -145,7 +145,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
   d3.csv('app/csv/fwk-params.csv')
     .get(function(err, rows) {
       if ( err ) throw err;
-      var model = processRows(rows);
+      var model = processRows(rows, paramInfo);
       handleChange();
       function handleChange() {
         $('#param-groups .panel-collapse').each(function(i, panel) {
@@ -176,6 +176,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         $('#grouped-bar-chart').empty();
         drawGroupedBarChart();
         $('.weight, .group-weight').on('change', handleChange);
+        $('[data-toggle="popover"]').popover();
       }
       function updateGroup(id, val) {
         model.forEach(function(group) {
@@ -249,6 +250,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         var radarData = fwkKeys.map(function(fwk) {
           return fwks[fwk];
         });
+        $('#radar-chart').empty();
         drawRadarChart(radarData);
       }
       function toBubbleModel(scale) {
@@ -572,7 +574,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
           .text(function(d) { return d; });
       }
     });
-  function processRows(rows) {
+  function processRows(rows, paramInfo) {
     var m = {}, wm = wm = {};
     var ro = [];
     rows.forEach(function(row) {
@@ -580,7 +582,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       var a = m[row.group] || [];
       row.id = nameToId(row.parameter);
       pidMap[row.id] = row.parameter;
-      a.push({ id: row.id, parameter: row.parameter, group: row.group, weight: parseFloat(row.weight) });
+      a.push({ id: row.id, parameter: row.parameter, group: row.group, weight: parseFloat(row.weight), info: paramInfo[row.id] });
       m[row.group] = a;
       var gid = nameToId(row.group);
       gidMap[gid] = row.group;
@@ -598,6 +600,7 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       return {
         id: gid,
         name: g,
+        info: paramInfo[gid],
         expanded: true,
         weight: 10,
         parameters: wm[gid],
