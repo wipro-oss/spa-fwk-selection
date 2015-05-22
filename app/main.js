@@ -39,6 +39,14 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
     'meteor-js'   : 'Meteor',
     'ext-js'      : 'Ext JS'
   };
+  var fwkUrls = {
+    'angular-js'  : 'http://angularjs.org',
+    'backbone-js' : 'http://backbonejs.org',
+    'ember-js'    : 'http://emberjs.com',
+    'knockout-js' : 'http://knockoutjs.com',
+    'meteor-js'   : 'http://meteor.com',
+    'ext-js'      : 'http://www.sencha.com/products/extjs/#overview'
+  }
   var gidMap = {};
   var pidMap = {};
   var template = Handlebars.compile(fwkParamsTemplate);
@@ -219,7 +227,10 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
         });
       }
       function tableModel(scale) {
-        var header = ['Parameter'].concat(fwkKeys.map(function(fwk) { return fwkLabels[fwk]; }));
+        var header = [ { id: 'parameter', label: 'Parameter', link: '#parameter' } ]
+            .concat(fwkKeys.map(function(fwk) {
+          return { id: fwk, label: fwkLabels[fwk], link: fwkUrls[fwk] };
+        }));
         var fwkTotals = {};
         fwkKeys.forEach(function(fwk) {
           fwkTotals[fwk] = 0;

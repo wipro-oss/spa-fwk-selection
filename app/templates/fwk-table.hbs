@@ -2,7 +2,11 @@
   <thead>
     <tr>
       {{#each header}}
-      <th>{{.}}</th>
+      {{#if @first}}
+      <th>{{label}}</th>
+      {{else}}
+      <th><a href="{{link}}" title={{label}}><img alt="{{label}}" src="img/{{id}}.png"/><br/>{{label}}</a></th>
+      {{/if}}
       {{/each}}
     </tr>
   </thead>
