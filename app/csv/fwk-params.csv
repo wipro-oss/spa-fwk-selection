@@ -17,7 +17,7 @@ Developer Support,0,Books Published,0.7,0.8,0.6,0.5,0.2,0.5
 Server Environment,10,REST Support,1,1,1,0.5,0,0.7
 Client/User Environment,10,RWD Support,0.8,0.8,0.8,0.8,0.5,0.7
 Client/User Environment,5,IE Support,0.3,0.3,0.3,0.8,0.2,0.5
-Client/User Environment,10,Mobile / iPhone Support,1,1,1,1,1,1
+Client/User Environment,10,Mobile Support,1,1,1,1,1,1
 Application Needs,0,Degree of Risk,1,1,1,0.9,0.3,0.8
 Application Needs,0,PUSH support,0.5,0.5,0.5,0.5,1,0.5
 User Interface,10,Handle large number of data elements ,0.3,0.5,0.3,0.3,0.3,0.2
