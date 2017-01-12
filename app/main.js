@@ -25,16 +25,18 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
   var colorscale = d3.scale.category10();
   var fwkKeys = [
     'angular-js',
-    'backbone-js',
+    'angular2',
     'ember-js',
-    'knockout-js',
+    'react-redux',
     'meteor-js',
     'ext-js'
   ];
   var fwkLabels = {
     'angular-js'  : 'AngularJS',
     'backbone-js' : 'BackboneJS',
+    'angular2' : 'Angular 2',
     'ember-js'    : 'EmberJS',
+    'react-redux' : 'React+Redux',
     'knockout-js' : 'KnockoutJS',
     'meteor-js'   : 'Meteor',
     'ext-js'      : 'Ext JS'
@@ -42,8 +44,10 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
   var fwkUrls = {
     'angular-js'  : 'http://angularjs.org',
     'backbone-js' : 'http://backbonejs.org',
+    'angular2' : 'https://angular.io/',
     'ember-js'    : 'http://emberjs.com',
     'knockout-js' : 'http://knockoutjs.com',
+    'react-redux' : 'http://redux.js.org',
     'meteor-js'   : 'http://meteor.com',
     'ext-js'      : 'http://www.sencha.com/products/extjs/#overview'
   }
@@ -248,14 +252,10 @@ require(['jquery', 'bootstrap', 'd3', 'radar-chart', 'handlebars', 'text!templat
       }
       function showRadarChart(scale) {
         // data
-        var fwks = {
-          'angular-js': [],
-          'backbone-js': [],
-          'ember-js': [],
-          'knockout-js': [],
-          'meteor-js': [],
-          'ext-js': []
-        };
+        var fwks = fwkKeys.reduce(function(a, k) {
+          a[k] = [];
+          return a;
+        }, {});
         model.forEach(function(group) {
           fwkKeys.forEach(function(fwk) {
             fwks[fwk].push({axis: group.name, value: scale * group[fwk] });
